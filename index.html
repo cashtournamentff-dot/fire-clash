@@ -82,32 +82,14 @@
             text-transform: uppercase; font-weight: bold; display: flex; justify-content: space-between; 
         }
 
-        /* --- OTHER PAGES --- */
+        /* --- EARN PAGE --- */
         .earn-card { background: #0d1117; border-radius: 12px; margin-bottom: 20px; overflow: hidden; border: 1px solid #1f2937; }
-        .image-box { width: 100%; height: 160px; background: #1c2128; display: flex; align-items: center; justify-content: center; }
-        .image-box img { width: 100%; height: 100%; object-fit: contain; background: #000; } /* Fixed Image Display */
+        .image-box { width: 100%; height: 160px; background: #000; display: flex; align-items: center; justify-content: center; }
+        .image-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .earn-info { padding: 15px; }
         .btn { display: inline-block; padding: 8px 18px; border-radius: 20px; color: white; text-decoration: none; font-weight: bold; font-size: 12px; margin-top: 10px; border: 1px solid #fff; }
         .btn-wa { background: linear-gradient(to right, #128C7E, #25D366); }
         .btn-tg { background: linear-gradient(to right, #0088cc, #24A1DE); }
-
-        #account-page { background: #f0f0f0; min-height: 100vh; margin: -15px; padding: 0 0 80px 0; color: #000; }
-        .account-header-bg { background: #1a1f29; padding: 40px 20px; text-align: center; color: white; }
-        .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid #fff; margin: 0 auto 10px; background: orange; display: flex; align-items: center; justify-content: center; font-size: 30px; }
-        .stats-bar { background: #1a1f29; display: flex; margin: -25px 15px 15px; border-radius: 10px; padding: 15px 0; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
-        .stat-item { flex: 1; text-align: center; border-right: 1px solid #333; }
-        .stat-item:last-child { border-right: none; }
-        .stat-num { font-size: 18px; font-weight: bold; display: block; }
-        .stat-txt { font-size: 11px; color: #aaa; }
-        .menu-list { padding: 0 15px; }
-        .menu-item { background: white; padding: 15px; margin-bottom: 8px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; cursor: pointer; }
-
-        #wallet-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wallet-blue); z-index: 2000; }
-        .w-head { padding: 15px; display: flex; align-items: center; gap: 15px; font-size: 18px; font-weight: bold; color: white; background: #1a1f29; cursor: pointer; }
-        .w-main-card { background: white; margin: 15px; border-radius: 6px; overflow: hidden; color: #000; }
-        .w-label { background: #1a1f29; color: white; text-align: center; padding: 8px; font-size: 13px; font-weight: bold; }
-        .w-body { padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .w-action-btn { background: var(--purple-btn); color: white; border: none; padding: 8px 20px; border-radius: 4px; font-weight: bold; font-size: 12px; }
 
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; z-index: 100; }
         .nav-item { text-align: center; color: #888; font-size: 12px; cursor: pointer; }
@@ -123,7 +105,7 @@
     </div>
 
     <div id="app-content">
-        <div id="app-header" class="header">
+        <div class="header">
             <div class="user-info">
                 <div class="avatar"></div>
                 <div>
@@ -140,16 +122,11 @@
                 
                 <div class="game-grid">
                     <div class="game-item" onclick="openMatch('Bermuda Tournament', 'https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png', '100', 'FREE', 'Solo', '48')">
-                        <div class="game-img-box" style="border:1px solid var(--accent-yellow)">
-                            <img src="https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png">
-                        </div>
-                        <div class="game-label">
-                            <span id="fb-match-name">Bermuda</span>
-                            <span id="fb-match-prize" style="color:var(--accent-yellow)">₹0</span>
-                        </div>
+                        <div class="game-img-box" style="border:1px solid var(--accent-yellow)"><img src="https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png"></div>
+                        <div class="game-label"><span id="fb-match-name">Bermuda</span><span id="fb-match-prize" style="color:var(--accent-yellow)">₹0</span></div>
                     </div>
 
-                    <div class="game-item" onclick="openMatch('CS 1VS1', 'https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png', '50', '10', '1vs1', '2')">
+                    <div class="game-item" onclick="openMatch('CS 1VS1', 'https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png', '50', '10', '1VS1', '2')">
                         <div class="game-img-box"><img src="https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png"></div>
                         <div class="game-label"><span>CS</span><span>1VS1</span></div>
                     </div>
@@ -159,7 +136,7 @@
                         <div class="game-label"><span>CS</span><span>SQUAD</span></div>
                     </div>
 
-                    <div class="game-item" onclick="openMatch('Lone Wolf 1VS1', 'https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png', '30', 'FREE', '1vs1', '2')">
+                    <div class="game-item" onclick="openMatch('Lone Wolf 1VS1', 'https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png', '30', 'FREE', '1VS1', '2')">
                         <div class="game-img-box"><img src="https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png"></div>
                         <div class="game-label"><span>Lone Wolf</span><span>1VS1</span></div>
                     </div>
@@ -173,26 +150,21 @@
 
             <div id="earn-page" class="page-content">
                 <div class="earn-card">
-                    <div class="image-box">
-                        <img src="https://i.postimg.cc/fymJMhLt/IMG-20260414-102931.png">
-                    </div>
+                    <div class="image-box"><img src="https://i.postimg.cc/fymJMhLt/IMG-20260414-102931.png"></div>
                     <div class="earn-info">
                         <div style="color:var(--accent-yellow); font-weight:bold;">JOIN WHATSAPP GROUP NOW 🔥</div>
                         <a href="#" class="btn btn-wa">JOIN NOW ON WHATSAPP ➔</a>
                     </div>
                 </div>
                 <div class="earn-card">
-                    <div class="image-box">
-                        <img src="https://i.postimg.cc/rsmrTH4P/IMG-20260414-102212.png">
-                    </div>
+                    <div class="image-box"><img src="https://i.postimg.cc/rsmrTH4P/IMG-20260414-102212.png"></div>
                     <div class="earn-info">
                         <div style="color:#24A1DE; font-weight:bold;">JOIN TELEGRAM GROUP NOW 📢</div>
                         <a href="#" class="btn btn-tg">JOIN NOW ON TELEGRAM ➔</a>
                     </div>
                 </div>
             </div>
-
-            </div>
+        </div>
 
         <div class="bottom-nav">
             <div class="nav-item" onclick="navTo('earn')">💰<br>Earn</div>
@@ -227,7 +199,6 @@
             }
         });
 
-        // Function to Send Data to Dashboard
         window.openMatch = function(name, img, prize, entry, type, slots) {
             localStorage.setItem('m_name', name);
             localStorage.setItem('m_img', img);
@@ -255,7 +226,6 @@
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             if(page === 'earn') { document.getElementById('earn-page').classList.add('active'); document.querySelectorAll('.nav-item')[0].classList.add('active'); }
             else if(page === 'play') { document.getElementById('play-page').classList.add('active'); document.querySelectorAll('.nav-item')[1].classList.add('active'); }
-            else if(page === 'account') { /* Account page logic here */ }
         }
     </script>
 </body>
