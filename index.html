@@ -69,7 +69,7 @@
         .tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: bold; background: #2d333b; color: #fff; border-bottom: 2px solid var(--accent-yellow); }
         
         .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .game-item { text-align: center; cursor: pointer; position: relative; }
+        .game-item { text-align: center; cursor: pointer; }
         
         .wide-card { grid-column: span 2; }
         .wide-card .game-img-box { aspect-ratio: auto; height: 78px; }
@@ -80,18 +80,12 @@
         .game-label { 
             background: #1c2128; font-size: 9px; padding: 5px 4px; border-radius: 4px; color: #ccc; 
             text-transform: uppercase; font-weight: bold; display: flex; justify-content: space-between; 
-            margin-bottom: 4px;
         }
-
-        /* Slots Progress Bar */
-        .slot-container { width: 100%; height: 4px; background: #333; border-radius: 2px; overflow: hidden; margin-bottom: 2px; }
-        .slot-fill { width: 100%; height: 100%; background: #ff4d4d; } /* 48/48 Full */
-        .slot-text { font-size: 8px; color: #aaa; text-align: left; }
 
         /* --- OTHER PAGES --- */
         .earn-card { background: #0d1117; border-radius: 12px; margin-bottom: 20px; overflow: hidden; border: 1px solid #1f2937; }
-        .image-box { width: 100%; height: 160px; background: #1c2128; display: flex; align-items: center; justify-content: center; color: #555; overflow: hidden; }
-        .image-box img { width: 100%; height: 100%; object-fit: cover; }
+        .image-box { width: 100%; height: 160px; background: #1c2128; display: flex; align-items: center; justify-content: center; }
+        .image-box img { width: 100%; height: 100%; object-fit: contain; background: #000; } /* Fixed Image Display */
         .earn-info { padding: 15px; }
         .btn { display: inline-block; padding: 8px 18px; border-radius: 20px; color: white; text-decoration: none; font-weight: bold; font-size: 12px; margin-top: 10px; border: 1px solid #fff; }
         .btn-wa { background: linear-gradient(to right, #128C7E, #25D366); }
@@ -107,18 +101,12 @@
         .stat-txt { font-size: 11px; color: #aaa; }
         .menu-list { padding: 0 15px; }
         .menu-item { background: white; padding: 15px; margin-bottom: 8px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; cursor: pointer; }
-        
-        .toggle { width: 45px; height: 24px; background: #ccc; border-radius: 15px; position: relative; transition: 0.3s; cursor: pointer; }
-        .toggle::after { content: ''; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; background: white; border-radius: 50%; transition: 0.3s; }
-        .toggle.active { background: #4caf50; }
-        .toggle.active::after { left: 24px; }
 
         #wallet-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wallet-blue); z-index: 2000; }
         .w-head { padding: 15px; display: flex; align-items: center; gap: 15px; font-size: 18px; font-weight: bold; color: white; background: #1a1f29; cursor: pointer; }
         .w-main-card { background: white; margin: 15px; border-radius: 6px; overflow: hidden; color: #000; }
         .w-label { background: #1a1f29; color: white; text-align: center; padding: 8px; font-size: 13px; font-weight: bold; }
         .w-body { padding: 15px; display: flex; justify-content: space-between; align-items: center; }
-        .w-btns { display: flex; flex-direction: column; gap: 10px; }
         .w-action-btn { background: var(--purple-btn); color: white; border: none; padding: 8px 20px; border-radius: 4px; font-weight: bold; font-size: 12px; }
 
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; z-index: 100; }
@@ -140,8 +128,7 @@
                 <div class="avatar"></div>
                 <div>
                     <div style="font-size: 10px; color: #888;">Welcome Back,</div>
-                    <div style="font-size: 14px; font-weight: bold;">FireXbattle</div>
-                </div>
+                    <div style="font-size: 14px; font-weight: bold;">Fire Clash</div> </div>
             </div>
             <div class="wallet-badge" onclick="showWallet()">💰 0.00</div>
         </div>
@@ -152,7 +139,7 @@
                 <div class="tabs"><div class="tab">TOURNAMENT</div></div>
                 
                 <div class="game-grid">
-                    <div class="game-item" onclick="openMatch('Bermuda Tournament', 'https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png')">
+                    <div class="game-item" onclick="openMatch('Bermuda Tournament', 'https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png', '100', 'FREE', 'Solo', '48')">
                         <div class="game-img-box" style="border:1px solid var(--accent-yellow)">
                             <img src="https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png">
                         </div>
@@ -160,36 +147,26 @@
                             <span id="fb-match-name">Bermuda</span>
                             <span id="fb-match-prize" style="color:var(--accent-yellow)">₹0</span>
                         </div>
-                        <div class="slot-container"><div class="slot-fill"></div></div>
-                        <div class="slot-text">48/48 Slots</div>
                     </div>
 
-                    <div class="game-item" onclick="openMatch('CS 1VS1', 'https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png')">
+                    <div class="game-item" onclick="openMatch('CS 1VS1', 'https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png', '50', '10', '1vs1', '2')">
                         <div class="game-img-box"><img src="https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png"></div>
                         <div class="game-label"><span>CS</span><span>1VS1</span></div>
-                        <div class="slot-container"><div class="slot-fill"></div></div>
-                        <div class="slot-text">2/2 Slots</div>
                     </div>
 
-                    <div class="game-item" onclick="openMatch('CS SQUAD', 'https://i.postimg.cc/4x3zZmzS/file-000000000654720b8f9d1163aa723ef3.png')">
+                    <div class="game-item" onclick="openMatch('CS SQUAD', 'https://i.postimg.cc/4x3zZmzS/file-000000000654720b8f9d1163aa723ef3.png', '200', '40', 'Squad', '8')">
                         <div class="game-img-box"><img src="https://i.postimg.cc/4x3zZmzS/file-000000000654720b8f9d1163aa723ef3.png"></div>
                         <div class="game-label"><span>CS</span><span>SQUAD</span></div>
-                        <div class="slot-container"><div class="slot-fill"></div></div>
-                        <div class="slot-text">8/8 Slots</div>
                     </div>
 
-                    <div class="game-item" onclick="openMatch('Lone Wolf 1VS1', 'https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png')">
+                    <div class="game-item" onclick="openMatch('Lone Wolf 1VS1', 'https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png', '30', 'FREE', '1vs1', '2')">
                         <div class="game-img-box"><img src="https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png"></div>
                         <div class="game-label"><span>Lone Wolf</span><span>1VS1</span></div>
-                        <div class="slot-container"><div class="slot-fill"></div></div>
-                        <div class="slot-text">2/2 Slots</div>
                     </div>
 
-                    <div class="game-item wide-card" onclick="openMatch('LW FREE MODE', 'https://i.postimg.cc/nLyVdPFW/file-00000000c69c71faaddbce9853390e99.png')">
+                    <div class="game-item wide-card" onclick="openMatch('LW FREE MODE', 'https://i.postimg.cc/nLyVdPFW/file-00000000c69c71faaddbce9853390e99.png', '0', 'FREE', 'Solo', '48')">
                         <div class="game-img-box" style="border: 1.5px solid #00FF00;"><img src="https://i.postimg.cc/nLyVdPFW/file-00000000c69c71faaddbce9853390e99.png"></div>
                         <div class="game-label" style="color: #00FF00;"><span>LW</span><span>FREE MODE</span></div>
-                        <div class="slot-container"><div class="slot-fill"></div></div>
-                        <div class="slot-text">48/48 Full</div>
                     </div>
                 </div>
             </div>
@@ -204,35 +181,18 @@
                         <a href="#" class="btn btn-wa">JOIN NOW ON WHATSAPP ➔</a>
                     </div>
                 </div>
-            </div>
-
-            <div id="account-page" class="page-content">
-                <div class="account-header-bg">
-                    <div class="profile-pic">🔥</div>
-                    <div style="font-size: 18px; font-weight: bold; margin-top: 10px;">hasnain__7434</div>
-                </div>
-                <div class="stats-bar">
-                    <div class="stat-item"><span class="stat-num">0</span><span class="stat-txt">Matches Played</span></div>
-                    <div class="stat-item"><span class="stat-num">0</span><span class="stat-txt">Total Earned</span></div>
-                    <div class="stat-item" onclick="showWallet()"><span class="stat-num">💰 0</span><span class="stat-txt">Total Balance</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="wallet-screen">
-            <div class="w-head" onclick="hideWallet()">← My Wallet</div>
-            <div class="w-main-card">
-                <div class="w-label">TOTAL BALANCE</div>
-                <div class="w-body">
-                    <div>
-                        <div style="font-size: 20px; font-weight: bold; margin-bottom: 5px;">💰 0.00</div>
+                <div class="earn-card">
+                    <div class="image-box">
+                        <img src="https://i.postimg.cc/rsmrTH4P/IMG-20260414-102212.png">
                     </div>
-                    <div class="w-btns">
-                        <button class="w-action-btn">ADD</button>
+                    <div class="earn-info">
+                        <div style="color:#24A1DE; font-weight:bold;">JOIN TELEGRAM GROUP NOW 📢</div>
+                        <a href="#" class="btn btn-tg">JOIN NOW ON TELEGRAM ➔</a>
                     </div>
                 </div>
             </div>
-        </div>
+
+            </div>
 
         <div class="bottom-nav">
             <div class="nav-item" onclick="navTo('earn')">💰<br>Earn</div>
@@ -258,7 +218,6 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // Fetch Data for Home Card
         const matchRef = ref(db, 'match1');
         onValue(matchRef, (snapshot) => {
             const data = snapshot.val();
@@ -268,10 +227,14 @@
             }
         });
 
-        // Clickable function for all cards
-        window.openMatch = function(name, img) {
-            localStorage.setItem('selectedName', name);
-            localStorage.setItem('selectedImg', img);
+        // Function to Send Data to Dashboard
+        window.openMatch = function(name, img, prize, entry, type, slots) {
+            localStorage.setItem('m_name', name);
+            localStorage.setItem('m_img', img);
+            localStorage.setItem('m_prize', prize);
+            localStorage.setItem('m_entry', entry);
+            localStorage.setItem('m_type', type);
+            localStorage.setItem('m_slots', slots);
             window.location.href = 'dashboard.html';
         }
 
@@ -290,20 +253,10 @@
         window.navTo = function(page) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(page === 'earn') {
-                document.getElementById('earn-page').classList.add('active');
-                document.querySelectorAll('.nav-item')[0].classList.add('active');
-            } else if(page === 'play') {
-                document.getElementById('play-page').classList.add('active');
-                document.querySelectorAll('.nav-item')[1].classList.add('active');
-            } else if(page === 'account') {
-                document.getElementById('account-page').classList.add('active');
-                document.querySelectorAll('.nav-item')[2].classList.add('active');
-            }
+            if(page === 'earn') { document.getElementById('earn-page').classList.add('active'); document.querySelectorAll('.nav-item')[0].classList.add('active'); }
+            else if(page === 'play') { document.getElementById('play-page').classList.add('active'); document.querySelectorAll('.nav-item')[1].classList.add('active'); }
+            else if(page === 'account') { /* Account page logic here */ }
         }
-
-        window.showWallet = function() { document.getElementById('wallet-screen').style.display = 'block'; }
-        window.hideWallet = function() { document.getElementById('wallet-screen').style.display = 'none'; }
     </script>
 </body>
 </html>
