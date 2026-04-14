@@ -146,7 +146,7 @@
                 <div class="tabs"><div class="tab">TOURNAMENT</div></div>
                 
                 <div class="game-grid">
-                    <div class="game-item" onclick="window.location.href='dashboard.html'">
+                    <div class="game-item" onclick="openGame('BR Tournament', 'https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png')">
                         <div class="game-img-box" style="border:1px solid var(--accent-yellow)">
                             <img src="https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png">
                         </div>
@@ -156,19 +156,22 @@
                         </div>
                     </div>
 
-                    <div class="game-item">
+                    <div class="game-item" onclick="openGame('CS 1VS1', 'https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png')">
                         <div class="game-img-box"><img src="https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png"></div>
                         <div class="game-label"><span>CS</span><span>1VS1</span></div>
                     </div>
-                    <div class="game-item">
+
+                    <div class="game-item" onclick="openGame('CS SQUAD', 'https://i.postimg.cc/4x3zZmzS/file-000000000654720b8f9d1163aa723ef3.png')">
                         <div class="game-img-box"><img src="https://i.postimg.cc/4x3zZmzS/file-000000000654720b8f9d1163aa723ef3.png"></div>
                         <div class="game-label"><span>CS</span><span>SQUAD</span></div>
                     </div>
-                    <div class="game-item">
+
+                    <div class="game-item" onclick="openGame('Lone Wolf 1VS1', 'https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png')">
                         <div class="game-img-box"><img src="https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png"></div>
                         <div class="game-label"><span>Lone Wolf</span><span>1VS1</span></div>
                     </div>
-                    <div class="game-item wide-card">
+
+                    <div class="game-item wide-card" onclick="openGame('LW FREE MODE', 'https://i.postimg.cc/nLyVdPFW/file-00000000c69c71faaddbce9853390e99.png')">
                         <div class="game-img-box" style="border: 1.5px solid #00FF00;"><img src="https://i.postimg.cc/nLyVdPFW/file-00000000c69c71faaddbce9853390e99.png"></div>
                         <div class="game-label" style="color: #00FF00;"><span>LW</span><span>FREE MODE</span></div>
                     </div>
@@ -267,7 +270,13 @@
             }
         });
 
-        // Original Loading Logic
+        // Click Function to open dashboard
+        window.openGame = function(name, img) {
+            localStorage.setItem('gameName', name);
+            localStorage.setItem('gameImg', img);
+            window.location.href = 'dashboard.html';
+        }
+
         window.onload = function() {
             setTimeout(() => { document.getElementById('pbar').style.width = '100%'; }, 100);
             setTimeout(() => {
@@ -281,7 +290,6 @@
             }, 3000);
         };
 
-        // Navigation and functions
         window.navTo = function(page) {
             document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
