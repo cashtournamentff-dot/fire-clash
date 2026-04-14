@@ -3,186 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fire Clash | Play & Win Real Cash</title>
+    <title>CASHH TOURNAMENT FF</title>
     <style>
         :root {
-            --primary-green: #00FF7F; 
             --bg-dark: #060b13;
-            --card-bg: #111721;
-            --accent-orange: #FFB301;
+            --accent-yellow: #FFB301;
+            --whatsapp-green: #25D366;
+            --telegram-blue: #0088cc;
+            --card-dark: #111721;
+            --wallet-blue: #001529;
+            --purple-btn: #7000ff;
         }
-        body {
+
+        body, html {
             margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            font-family: sans-serif;
             background-color: var(--bg-dark);
-            color: white; font-family: 'Segoe UI', Roboto, sans-serif;
-            text-align: center; overflow-x: hidden;
+            color: white;
+            overflow-x: hidden;
         }
-        .navbar { 
-            padding: 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            max-width: 1200px; 
-            margin: auto;
+
+        /* --- LOADING SCREEN --- */
+        #loading-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #000;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 1000;
         }
-        .logo { 
-            font-size: 26px; 
-            font-weight: 900; 
-            color: white; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px;
-            letter-spacing: 1px;
+        .progress-container {
+            width: 75%; height: 10px;
+            background: #222; border-radius: 10px;
+            margin: 20px 0; overflow: hidden;
+            border: 1px solid #444;
         }
-        .logo span { color: var(--primary-green); }
-        .hero-section { 
-            padding: 60px 20px; 
-            max-width: 1200px; 
-            margin: auto; 
-            display: flex; 
-            flex-wrap: wrap; 
-            align-items: center; 
-            justify-content: space-between;
-            min-height: 80vh;
+        .progress-bar {
+            width: 0%; height: 100%;
+            background: #fff;
+            transition: width 3s linear;
         }
-        .hero-text { 
-            flex: 1; 
-            min-width: 320px; 
-            text-align: left; 
-            padding-right: 20px;
+        #status-text { font-size: 16px; color: #fff; font-weight: bold; }
+        .status-green { color: #00FF00 !important; }
+
+        /* --- MAIN APP --- */
+        #app-content { display:none; }
+        
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px; background: #1a1f29;
         }
-        .hero-text h1 { 
-            font-size: 55px; 
-            line-height: 1.1; 
-            margin: 10px 0 20px 0; 
-            font-weight: 900;
-        }
-        .hero-text h1 span { 
-            color: var(--primary-green);
-            text-shadow: 0 0 20px rgba(0, 255, 127, 0.3);
-        }
-        .hero-text p { 
-            color: #b0b8c1; 
-            font-size: 18px; 
-            margin-bottom: 35px; 
-            max-width: 500px;
-            line-height: 1.6;
-        }
-        .btn-download {
-            background: linear-gradient(135deg, #00FF7F, #00c864);
-            color: #000 !important;
-            padding: 18px 40px; 
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; background: orange; border: 1.5px solid white; }
+        .wallet-badge { background: #fff; color: #000; padding: 4px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+
+        .page { padding: 15px; padding-bottom: 80px; }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+
+        .section-label { text-align: center; margin: 15px 0; font-weight: bold; font-size: 14px; color: #eee; }
+
+        /* Tournament Card Style */
+        .match-card {
+            background: #111721;
             border-radius: 12px;
-            text-decoration: none; 
-            font-weight: bold; 
-            font-size: 20px;
-            display: inline-flex; 
-            align-items: center; 
-            gap: 12px;
-            transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(0, 255, 127, 0.2);
-            cursor: pointer;
-            border: none;
-        }
-        .btn-download:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 15px 40px rgba(0, 255, 127, 0.4);
-        }
-        .stats-container {
-            background: var(--card-bg); 
-            padding: 35px; 
-            border-radius: 24px;
-            flex: 1; 
-            min-width: 300px; 
-            max-width: 420px;
-            border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        .stat-item {
-            display: flex; 
-            align-items: center; 
-            gap: 20px;
-            padding: 20px 0; 
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .stat-item:last-child { border: none; }
-        .stat-icon { 
-            background: rgba(0, 255, 127, 0.1); 
-            width: 50px; 
-            height: 50px; 
-            border-radius: 12px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            font-size: 24px;
-        }
-        .stat-info { text-align: left; }
-        .stat-info h3 { margin: 0; font-size: 24px; font-weight: bold; }
-        .stat-info p { margin: 0; font-size: 14px; color: #88929d; font-weight: 500; }
-        .trust-badge {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 8px 16px;
-            border-radius: 50px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--accent-orange);
-            font-size: 13px;
-            font-weight: bold;
+            border: 1px solid #333;
             margin-bottom: 20px;
-            border: 1px solid rgba(255, 179, 1, 0.2);
+            overflow: hidden;
         }
-        @media (max-width: 768px) {
-            .hero-text { text-align: center; padding-right: 0; }
-            .hero-text h1 { font-size: 40px; }
-            .hero-section { padding: 40px 20px; justify-content: center; }
-            .stats-container { margin-top: 40px; }
+        .match-header {
+            background: var(--accent-yellow);
+            color: black;
+            padding: 5px 15px;
+            font-weight: bold;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
         }
+        .match-body { padding: 15px; }
+        .match-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .stat-val { display: block; font-weight: bold; color: white; font-size: 16px; }
+        .stat-lbl { font-size: 10px; color: #888; text-transform: uppercase; }
+
+        .btn-join {
+            width: 100%;
+            background: var(--purple-btn);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; z-index: 100; }
+        .nav-item { text-align: center; color: #888; font-size: 12px; cursor: pointer; }
+        .nav-item.active { color: #fff; }
     </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="logo">🔥 Fire<span>Clash</span></div>
-        <div style="font-weight: bold; font-size: 14px; cursor: pointer; color: #88929d;">Support</div>
-    </nav>
-    <div class="hero-section">
-        <div class="hero-text">
-            <div class="trust-badge">
-                <span>🏆</span> India's Trusted Gaming Platform
+
+    <div id="loading-overlay">
+        <h2 style="color: #FFB301;">CASHH TOURNAMENT FF</h2>
+        <div class="progress-container"><div class="progress-bar" id="pbar"></div></div>
+        <p id="status-text">Connecting Server...</p>
+    </div>
+
+    <div id="app-content">
+        <div id="app-header" class="header">
+            <div class="user-info">
+                <div class="avatar"></div>
+                <div>
+                    <div style="font-size: 10px; color: #888;">Welcome Back,</div>
+                    <div style="font-size: 14px; font-weight: bold;">FireXbattle</div>
+                </div>
             </div>
-            <h1>Compete &<br><span>Win Real Cash.</span></h1>
-            <p>Join Fire Clash today! The ultimate destination for Free Fire tournaments. Join matches, get kills, and win big prizes daily.</p>
-            
-            <a href="app_page.html" class="btn-download">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg" width="25" alt="Android"> 
-                Download APK
-            </a>
-            
-            <div style="margin-top: 15px; display: flex; gap: 15px; align-items: center; color: #555; font-size: 12px; font-weight: bold;">
-                <span>✅ 100% Safe</span>
-                <span>✅ Instant Withdraw</span>
-                <span>✅ No Lag</span>
-            </div>
+            <div class="wallet-badge" onclick="showWallet()">💰 0.00</div>
         </div>
-        <div class="stats-container">
-            <h2 style="text-align: left; margin-top: 0; font-size: 18px; color: #88929d; text-transform: uppercase; letter-spacing: 1px;">Live Performance</h2>
-            <div class="stat-item">
-                <div class="stat-icon">👥</div>
-                <div class="stat-info"><h3>10,000+</h3><p>Active Players</p></div>
+
+        <div class="page">
+            <div id="play-page" class="page-content active">
+                <div class="section-label">LIVE TOURNAMENTS</div>
+                
+                <div class="match-card">
+                    <div class="match-header">
+                        <span id="fMatchName">LOADING...</span>
+                        <span>BERMUDA</span>
+                    </div>
+                    <div class="match-body">
+                        <div class="match-stats">
+                            <div><span class="stat-lbl">Win Prize</span><span class="stat-val">₹<span id="fPrize">0</span></span></div>
+                            <div><span class="stat-lbl">Entry Fee</span><span class="stat-val">₹<span id="fEntry">0</span></span></div>
+                            <div><span class="stat-lbl">Type</span><span class="stat-val">SOLO</span></div>
+                        </div>
+                        <button class="btn-join" onclick="alert('Joining Match...')">JOIN NOW</button>
+                    </div>
+                </div>
             </div>
-            <div class="stat-item">
-                <div class="stat-icon" style="color: var(--primary-green);">💰</div>
-                <div class="stat-info"><h3 style="color: var(--primary-green);">₹1,00,000+</h3><p>Total Winnings Paid Out</p></div>
+
             </div>
-            <div class="stat-item">
-                <div class="stat-icon">🎮</div>
-                <div class="stat-info"><h3>20,000+</h3><p>Matches Played</p></div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-icon">⭐</div>
-                <div class="stat-info"><h3>4.5</h3><p>User Satisfaction Rating</p></div>
-            </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item" onclick="navTo('earn')">💰<br>Earn</div>
+            <div class="nav-item active" onclick="navTo('play')">🎮<br>Play</div>
+            <div class="nav-item" onclick="navTo('account')">👤<br>Account</div>
         </div>
     </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyANxMtv6HQwQONKXM-wZ7UxKvvCy1MYsNg",
+            authDomain: "fire-clash-999a7.firebaseapp.com",
+            projectId: "fire-clash-999a7",
+            storageBucket: "fire-clash-999a7.firebasestorage.app",
+            databaseURL: "https://fire-clash-999a7-default-rtdb.firebaseio.com",
+            messagingSenderId: "896687403596",
+            appId: "1:896687403596:web:9a07786167bdb520557ae9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Firebase Data Fetching
+        const matchRef = ref(db, 'match1');
+        onValue(matchRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById('fMatchName').innerText = data.name;
+                document.getElementById('fPrize').innerText = data.prize;
+                document.getElementById('fEntry').innerText = data.entry;
+            }
+        });
+
+        // Loading Screen Logic
+        window.onload = function() {
+            setTimeout(() => { document.getElementById('pbar').style.width = '100%'; }, 100);
+            setTimeout(() => {
+                document.getElementById('status-text').innerText = "Server Connected ✓";
+                document.getElementById('status-text').classList.add('status-green');
+                setTimeout(() => {
+                    document.getElementById('loading-overlay').style.display = 'none';
+                    document.getElementById('app-content').style.display = 'block';
+                }, 500); 
+            }, 3000);
+        };
+    </script>
 </body>
 </html>
