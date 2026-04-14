@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Clash | Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        body { font-family: 'Segoe UI', sans-serif; background-color: #060b13; }
+        .neon-text { font-family: 'Orbitron', sans-serif; text-shadow: 0 0 10px #ffb301; }
+    </style>
+</head>
+<body class="text-white">
+
+    <div class="p-6 flex justify-between items-center border-b border-gray-800 bg-gray-900/50 backdrop-blur-md sticky top-0 z-50">
+        <div>
+            <h1 class="text-2xl font-black italic text-orange-500 neon-text">FIRE CLASH</h1>
+            <p class="text-xs text-gray-400">Welcome, Warrior!</p>
+        </div>
+        <div class="bg-gray-800 px-4 py-2 rounded-full border border-orange-500/50">
+            <span class="text-orange-500 font-bold">₹</span> <span id="userBalance" class="font-bold">100.00</span>
+        </div>
+    </div>
+
+    <div class="p-4 mt-4">
+        <h2 class="text-lg font-bold mb-4 flex items-center">
+            <span class="w-2 h-2 bg-red-600 rounded-full animate-ping mr-2"></span> LIVE TOURNAMENTS
+        </h2>
+
+        <div class="bg-gray-800/80 rounded-2xl overflow-hidden border border-gray-700 shadow-xl mb-6">
+            <div class="bg-gradient-to-r from-orange-600 to-red-600 p-3 flex justify-between items-center">
+                <span id="displayMatchName" class="font-black text-sm uppercase tracking-widest italic text-white">LOADING...</span>
+                <span class="bg-black/30 px-2 py-1 rounded text-[10px] font-bold">MAP: BERMUDA</span>
+            </div>
+            
+            <div class="p-5">
+                <div class="grid grid-cols-3 gap-4 text-center mb-6">
+                    <div>
+                        <p class="text-gray-400 text-[10px] uppercase mb-1">Prize Pool</p>
+                        <p class="text-xl font-black text-orange-500">₹<span id="displayPrize">0</span></p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 text-[10px] uppercase mb-1">Entry Fee</p>
+                        <p class="text-xl font-black text-white">₹<span id="displayEntry">0</span></p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 text-[10px] uppercase mb-1">Type</p>
+                        <p class="text-xl font-black text-white italic">SOLO</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <button class="w-full bg-orange-600 hover:bg-orange-500 py-3 rounded-xl font-black text-sm shadow-lg transition duration-300">
+                        JOIN NOW
+                    </button>
+                    <div class="bg-black/40 p-3 rounded-lg border border-dashed border-gray-600 mt-2">
+                        <p class="text-[10px] text-gray-400 text-center mb-1">ROOM ID & PASSWORD</p>
+                        <p id="displayDetails" class="text-center font-mono text-orange-400 font-bold tracking-widest text-sm">Wait for match time...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyANxMtv6HQwQONKXM-wZ7UxKvvCy1MYsNg",
+            authDomain: "fire-clash-999a7.firebaseapp.com",
+            projectId: "fire-clash-999a7",
+            storageBucket: "fire-clash-999a7.firebasestorage.app",
+            databaseURL: "https://fire-clash-999a7-default-rtdb.firebaseio.com",
+            messagingSenderId: "896687403596",
+            appId: "1:896687403596:web:9a07786167bdb520557ae9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const matchRef = ref(db, 'match1');
+        onValue(matchRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById('displayMatchName').innerText = data.name;
+                document.getElementById('displayEntry').innerText = data.entry;
+                document.getElementById('displayPrize').innerText = data.prize;
+                document.getElementById('displayDetails').innerText = data.details || "Details coming soon...";
+            }
+        });
+    </script>
+</body>
+</html>
