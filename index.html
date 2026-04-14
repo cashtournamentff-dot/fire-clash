@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Clash - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: white; }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+
+    <div class="glass p-8 rounded-2xl shadow-2xl w-full max-w-md text-center">
+        <h1 class="text-4xl font-bold mb-2 text-orange-500">FIRE CLASH</h1>
+        <p class="text-gray-400 mb-8">Tournament Khelo, Paisa Jeeto!</p>
+
+        <button id="loginBtn" class="flex items-center justify-center w-full bg-white text-black font-bold py-3 px-4 rounded-lg hover:bg-gray-200 transition duration-300">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6 mr-3">
+            Login with Google
+        </button>
+
+        <p id="status" class="mt-4 text-sm text-gray-500"></p>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // Tera Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyANxMtv6HQwQONKXM-wZ7UxKvvCy1MYsNg",
+            authDomain: "fire-clash-999a7.firebaseapp.com",
+            projectId: "fire-clash-999a7",
+            storageBucket: "fire-clash-999a7.firebasestorage.app",
+            messagingSenderId: "896687403596",
+            appId: "1:896687403596:web:9a07786167bdb520557ae9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        document.getElementById('loginBtn').addEventListener('click', async () => {
+            const status = document.getElementById('status');
+            status.innerText = "Connecting to Google...";
+            
+            try {
+                const result = await signInWithPopup(auth, provider);
+                status.innerText = "Success! Redirecting...";
+                // Login ke baad dashboard par bhejne ke liye (ye file hum agle step me banayenge)
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                }, 1000);
+            } catch (error) {
+                status.innerText = "Error: " + error.message;
+                console.error(error);
+            }
+        });
+    </script>
+</body>
+</html>
