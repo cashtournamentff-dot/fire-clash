@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Clash | Admin Control</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white p-5">
+    <div class="max-w-lg mx-auto bg-gray-800 p-8 rounded-2xl shadow-2xl border border-orange-500/30">
+        <h2 class="text-3xl font-black text-orange-500 mb-6 text-center italic">CONTROL CENTER</h2>
+        
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-bold mb-1">Match Name</label>
+                <input id="mName" type="text" placeholder="e.g. Solo Battle" class="w-full p-3 bg-gray-700 rounded-lg outline-none border border-gray-600 focus:border-orange-500 text-white">
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-bold mb-1">Entry Fee</label>
+                    <input id="mEntry" type="number" placeholder="20" class="w-full p-3 bg-gray-700 rounded-lg outline-none border border-gray-600 focus:border-orange-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mb-1">Total Prize</label>
+                    <input id="mPrize" type="number" placeholder="500" class="w-full p-3 bg-gray-700 rounded-lg outline-none border border-gray-600 focus:border-orange-500">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-bold mb-1">Room ID & Password</label>
+                <input id="mDetails" type="text" placeholder="ID: 12345 Pass: 000" class="w-full p-3 bg-gray-700 rounded-lg outline-none border border-gray-600 focus:border-orange-500">
+            </div>
+            
+            <button onclick="updateMatch()" class="w-full bg-orange-600 hover:bg-orange-500 py-4 rounded-xl font-black text-xl shadow-lg transition duration-300 mt-4">
+                UPDATE TO APP 🚀
+            </button>
+            <p id="status" class="text-center text-sm font-bold text-green-400 mt-2"></p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyANxMtv6HQwQONKXM-wZ7UxKvvCy1MYsNg",
+            authDomain: "fire-clash-999a7.firebaseapp.com",
+            projectId: "fire-clash-999a7",
+            storageBucket: "fire-clash-999a7.firebasestorage.app",
+            databaseURL: "https://fire-clash-999a7-default-rtdb.firebaseio.com",
+            messagingSenderId: "896687403596",
+            appId: "1:896687403596:web:9a07786167bdb520557ae9"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window.updateMatch = function() {
+            const name = document.getElementById('mName').value;
+            const entry = document.getElementById('mEntry').value;
+            const prize = document.getElementById('mPrize').value;
+            const details = document.getElementById('mDetails').value;
+
+            set(ref(db, 'match1'), {
+                name: name,
+                entry: entry,
+                prize: prize,
+                details: details
+            }).then(() => {
+                document.getElementById('status').innerText = "App Updated Successfully!";
+                setTimeout(() => document.getElementById('status').innerText = "", 3000);
+            });
+        }
+    </script>
+</body>
+</html>
