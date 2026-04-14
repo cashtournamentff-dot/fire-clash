@@ -3,61 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fire Clash - Login</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Fire Clash | Play & Win Real Cash</title>
     <style>
-        body { background-color: #0f172a; color: white; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        :root {
+            --primary-green: #00FF7F; 
+            --bg-dark: #060b13;
+            --card-bg: #111721;
+            --accent-orange: #FFB301;
+        }
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg-dark);
+            color: white; font-family: 'Segoe UI', Roboto, sans-serif;
+            text-align: center; overflow-x: hidden;
+        }
+        .navbar { 
+            padding: 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            max-width: 1200px; 
+            margin: auto;
+        }
+        .logo { 
+            font-size: 26px; 
+            font-weight: 900; 
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            letter-spacing: 1px;
+        }
+        .logo span { color: var(--primary-green); }
+        .hero-section { 
+            padding: 60px 20px; 
+            max-width: 1200px; 
+            margin: auto; 
+            display: flex; 
+            flex-wrap: wrap; 
+            align-items: center; 
+            justify-content: space-between;
+            min-height: 80vh;
+        }
+        .hero-text { 
+            flex: 1; 
+            min-width: 320px; 
+            text-align: left; 
+            padding-right: 20px;
+        }
+        .hero-text h1 { 
+            font-size: 55px; 
+            line-height: 1.1; 
+            margin: 10px 0 20px 0; 
+            font-weight: 900;
+        }
+        .hero-text h1 span { 
+            color: var(--primary-green);
+            text-shadow: 0 0 20px rgba(0, 255, 127, 0.3);
+        }
+        .hero-text p { 
+            color: #b0b8c1; 
+            font-size: 18px; 
+            margin-bottom: 35px; 
+            max-width: 500px;
+            line-height: 1.6;
+        }
+        .btn-download {
+            background: linear-gradient(135deg, #00FF7F, #00c864);
+            color: #000 !important;
+            padding: 18px 40px; 
+            border-radius: 12px;
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 20px;
+            display: inline-flex; 
+            align-items: center; 
+            gap: 12px;
+            transition: 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 255, 127, 0.2);
+            cursor: pointer;
+            border: none;
+        }
+        .btn-download:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 15px 40px rgba(0, 255, 127, 0.4);
+        }
+        .stats-container {
+            background: var(--card-bg); 
+            padding: 35px; 
+            border-radius: 24px;
+            flex: 1; 
+            min-width: 300px; 
+            max-width: 420px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .stat-item {
+            display: flex; 
+            align-items: center; 
+            gap: 20px;
+            padding: 20px 0; 
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .stat-item:last-child { border: none; }
+        .stat-icon { 
+            background: rgba(0, 255, 127, 0.1); 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 12px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-size: 24px;
+        }
+        .stat-info { text-align: left; }
+        .stat-info h3 { margin: 0; font-size: 24px; font-weight: bold; }
+        .stat-info p { margin: 0; font-size: 14px; color: #88929d; font-weight: 500; }
+        .trust-badge {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 16px;
+            border-radius: 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-orange);
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 179, 1, 0.2);
+        }
+        @media (max-width: 768px) {
+            .hero-text { text-align: center; padding-right: 0; }
+            .hero-text h1 { font-size: 40px; }
+            .hero-section { padding: 40px 20px; justify-content: center; }
+            .stats-container { margin-top: 40px; }
+        }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
-
-    <div class="glass p-8 rounded-2xl shadow-2xl w-full max-w-md text-center">
-        <h1 class="text-4xl font-bold mb-2 text-orange-500">FIRE CLASH</h1>
-        <p class="text-gray-400 mb-8">Tournament Khelo, Paisa Jeeto!</p>
-
-        <button id="loginBtn" class="flex items-center justify-center w-full bg-white text-black font-bold py-3 px-4 rounded-lg hover:bg-gray-200 transition duration-300">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6 mr-3">
-            Login with Google
-        </button>
-
-        <p id="status" class="mt-4 text-sm text-gray-500"></p>
-    </div>
-
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-        // Tera Firebase Config
-        const firebaseConfig = {
-            apiKey: "AIzaSyANxMtv6HQwQONKXM-wZ7UxKvvCy1MYsNg",
-            authDomain: "fire-clash-999a7.firebaseapp.com",
-            projectId: "fire-clash-999a7",
-            storageBucket: "fire-clash-999a7.firebasestorage.app",
-            messagingSenderId: "896687403596",
-            appId: "1:896687403596:web:9a07786167bdb520557ae9"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
-
-        document.getElementById('loginBtn').addEventListener('click', async () => {
-            const status = document.getElementById('status');
-            status.innerText = "Connecting to Google...";
+<body>
+    <nav class="navbar">
+        <div class="logo">🔥 Fire<span>Clash</span></div>
+        <div style="font-weight: bold; font-size: 14px; cursor: pointer; color: #88929d;">Support</div>
+    </nav>
+    <div class="hero-section">
+        <div class="hero-text">
+            <div class="trust-badge">
+                <span>🏆</span> India's Trusted Gaming Platform
+            </div>
+            <h1>Compete &<br><span>Win Real Cash.</span></h1>
+            <p>Join Fire Clash today! The ultimate destination for Free Fire tournaments. Join matches, get kills, and win big prizes daily.</p>
             
-            try {
-                const result = await signInWithPopup(auth, provider);
-                status.innerText = "Success! Redirecting...";
-                // Login ke baad dashboard par bhejne ke liye (ye file hum agle step me banayenge)
-                setTimeout(() => {
-                    window.location.href = "dashboard.html";
-                }, 1000);
-            } catch (error) {
-                status.innerText = "Error: " + error.message;
-                console.error(error);
-            }
-        });
-    </script>
+            <a href="app_page.html" class="btn-download">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg" width="25" alt="Android"> 
+                Download APK
+            </a>
+            
+            <div style="margin-top: 15px; display: flex; gap: 15px; align-items: center; color: #555; font-size: 12px; font-weight: bold;">
+                <span>✅ 100% Safe</span>
+                <span>✅ Instant Withdraw</span>
+                <span>✅ No Lag</span>
+            </div>
+        </div>
+        <div class="stats-container">
+            <h2 style="text-align: left; margin-top: 0; font-size: 18px; color: #88929d; text-transform: uppercase; letter-spacing: 1px;">Live Performance</h2>
+            <div class="stat-item">
+                <div class="stat-icon">👥</div>
+                <div class="stat-info"><h3>10,000+</h3><p>Active Players</p></div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon" style="color: var(--primary-green);">💰</div>
+                <div class="stat-info"><h3 style="color: var(--primary-green);">₹1,00,000+</h3><p>Total Winnings Paid Out</p></div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">🎮</div>
+                <div class="stat-info"><h3>20,000+</h3><p>Matches Played</p></div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-info"><h3>4.5</h3><p>User Satisfaction Rating</p></div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
