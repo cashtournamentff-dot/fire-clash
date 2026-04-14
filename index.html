@@ -1,40 +1,262 @@
-<div class="game-grid">
-    <div class="game-item" onclick="openMatch('BR Tournament', 'https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png')">
-        <div class="game-img-box" style="border:1px solid var(--accent-yellow)">
-            <img src="https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CASHH TOURNAMENT FF</title>
+    <style>
+        :root {
+            --bg-dark: #060b13;
+            --accent-yellow: #FFB301;
+            --whatsapp-green: #25D366;
+            --telegram-blue: #0088cc;
+            --card-dark: #111721;
+            --wallet-blue: #001529;
+            --purple-btn: #7000ff;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
+            font-family: sans-serif;
+            background-color: var(--bg-dark);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* --- LOADING SCREEN --- */
+        #loading-overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #000;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            z-index: 1000;
+        }
+        .progress-container {
+            width: 75%; height: 10px;
+            background: #222; border-radius: 10px;
+            margin: 20px 0; overflow: hidden;
+            border: 1px solid #444;
+        }
+        .progress-bar-load {
+            width: 0%; height: 100%;
+            background: #fff;
+            transition: width 3s linear;
+        }
+        #status-text { font-size: 16px; color: #fff; font-weight: bold; }
+        .status-green { color: #00FF00 !important; }
+
+        /* --- MAIN APP --- */
+        #app-content { display:none; }
+        
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px; background: #1a1f29;
+        }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .avatar { width: 35px; height: 35px; border-radius: 50%; background: orange; border: 1.5px solid white; }
+        .wallet-badge { background: #fff; color: #000; padding: 4px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
+
+        .page { padding: 15px; padding-bottom: 80px; }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+
+        .section-label { text-align: center; margin: 15px 0; font-weight: bold; font-size: 14px; color: #eee; }
+
+        /* Play Page Grid */
+        .tabs { display: flex; background: #161b22; border-radius: 6px; overflow: hidden; margin-bottom: 20px; border: 1px solid #333; }
+        .tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: bold; background: #2d333b; color: #fff; border-bottom: 2px solid var(--accent-yellow); }
+        
+        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .game-item { text-align: center; cursor: pointer; }
+        
+        .wide-card { grid-column: span 2; }
+        .wide-card .game-img-box { aspect-ratio: auto; height: 78px; }
+
+        .game-img-box { background: #1c2128; width: 100%; aspect-ratio: 1/1; border-radius: 10px; border: 1px solid #30363d; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #444; overflow: hidden; }
+        .game-img-box img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .game-label { 
+            background: #1c2128; font-size: 9px; padding: 5px 4px; border-radius: 4px; color: #ccc; 
+            text-transform: uppercase; font-weight: bold; display: flex; justify-content: space-between; 
+        }
+
+        /* --- OTHER PAGES --- */
+        .earn-card { background: #0d1117; border-radius: 12px; margin-bottom: 20px; overflow: hidden; border: 1px solid #1f2937; }
+        .image-box { width: 100%; height: 160px; background: #1c2128; display: flex; align-items: center; justify-content: center; }
+        .image-box img { width: 100%; height: 100%; object-fit: contain; background: #000; } /* Fixed Image Display */
+        .earn-info { padding: 15px; }
+        .btn { display: inline-block; padding: 8px 18px; border-radius: 20px; color: white; text-decoration: none; font-weight: bold; font-size: 12px; margin-top: 10px; border: 1px solid #fff; }
+        .btn-wa { background: linear-gradient(to right, #128C7E, #25D366); }
+        .btn-tg { background: linear-gradient(to right, #0088cc, #24A1DE); }
+
+        #account-page { background: #f0f0f0; min-height: 100vh; margin: -15px; padding: 0 0 80px 0; color: #000; }
+        .account-header-bg { background: #1a1f29; padding: 40px 20px; text-align: center; color: white; }
+        .profile-pic { width: 90px; height: 90px; border-radius: 50%; border: 4px solid #fff; margin: 0 auto 10px; background: orange; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+        .stats-bar { background: #1a1f29; display: flex; margin: -25px 15px 15px; border-radius: 10px; padding: 15px 0; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .stat-item { flex: 1; text-align: center; border-right: 1px solid #333; }
+        .stat-item:last-child { border-right: none; }
+        .stat-num { font-size: 18px; font-weight: bold; display: block; }
+        .stat-txt { font-size: 11px; color: #aaa; }
+        .menu-list { padding: 0 15px; }
+        .menu-item { background: white; padding: 15px; margin-bottom: 8px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; cursor: pointer; }
+
+        #wallet-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wallet-blue); z-index: 2000; }
+        .w-head { padding: 15px; display: flex; align-items: center; gap: 15px; font-size: 18px; font-weight: bold; color: white; background: #1a1f29; cursor: pointer; }
+        .w-main-card { background: white; margin: 15px; border-radius: 6px; overflow: hidden; color: #000; }
+        .w-label { background: #1a1f29; color: white; text-align: center; padding: 8px; font-size: 13px; font-weight: bold; }
+        .w-body { padding: 15px; display: flex; justify-content: space-between; align-items: center; }
+        .w-action-btn { background: var(--purple-btn); color: white; border: none; padding: 8px 20px; border-radius: 4px; font-weight: bold; font-size: 12px; }
+
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; z-index: 100; }
+        .nav-item { text-align: center; color: #888; font-size: 12px; cursor: pointer; }
+        .nav-item.active { color: #fff; }
+    </style>
+</head>
+<body>
+
+    <div id="loading-overlay">
+        <h2 style="color: #FFB301;">CASHH TOURNAMENT FF</h2>
+        <div class="progress-container"><div class="progress-bar-load" id="pbar"></div></div>
+        <p id="status-text">Connecting Server...</p>
+    </div>
+
+    <div id="app-content">
+        <div id="app-header" class="header">
+            <div class="user-info">
+                <div class="avatar"></div>
+                <div>
+                    <div style="font-size: 10px; color: #888;">Welcome Back,</div>
+                    <div style="font-size: 14px; font-weight: bold;">Fire Clash</div> </div>
+            </div>
+            <div class="wallet-badge" onclick="showWallet()">💰 0.00</div>
         </div>
-        <div class="game-label">
-            <span id="fb-match-name">BR Tournament</span>
-            <span id="fb-match-prize" style="color:var(--accent-yellow)">₹0</span>
+
+        <div class="page">
+            <div id="play-page" class="page-content active">
+                <div class="section-label">Esports Games</div>
+                <div class="tabs"><div class="tab">TOURNAMENT</div></div>
+                
+                <div class="game-grid">
+                    <div class="game-item" onclick="openMatch('Bermuda Tournament', 'https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png', '100', 'FREE', 'Solo', '48')">
+                        <div class="game-img-box" style="border:1px solid var(--accent-yellow)">
+                            <img src="https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png">
+                        </div>
+                        <div class="game-label">
+                            <span id="fb-match-name">Bermuda</span>
+                            <span id="fb-match-prize" style="color:var(--accent-yellow)">₹0</span>
+                        </div>
+                    </div>
+
+                    <div class="game-item" onclick="openMatch('CS 1VS1', 'https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png', '50', '10', '1vs1', '2')">
+                        <div class="game-img-box"><img src="https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png"></div>
+                        <div class="game-label"><span>CS</span><span>1VS1</span></div>
+                    </div>
+
+                    <div class="game-item" onclick="openMatch('CS SQUAD', 'https://i.postimg.cc/4x3zZmzS/file-000000000654720b8f9d1163aa723ef3.png', '200', '40', 'Squad', '8')">
+                        <div class="game-img-box"><img src="https://i.postimg.cc/4x3zZmzS/file-000000000654720b8f9d1163aa723ef3.png"></div>
+                        <div class="game-label"><span>CS</span><span>SQUAD</span></div>
+                    </div>
+
+                    <div class="game-item" onclick="openMatch('Lone Wolf 1VS1', 'https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png', '30', 'FREE', '1vs1', '2')">
+                        <div class="game-img-box"><img src="https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png"></div>
+                        <div class="game-label"><span>Lone Wolf</span><span>1VS1</span></div>
+                    </div>
+
+                    <div class="game-item wide-card" onclick="openMatch('LW FREE MODE', 'https://i.postimg.cc/nLyVdPFW/file-00000000c69c71faaddbce9853390e99.png', '0', 'FREE', 'Solo', '48')">
+                        <div class="game-img-box" style="border: 1.5px solid #00FF00;"><img src="https://i.postimg.cc/nLyVdPFW/file-00000000c69c71faaddbce9853390e99.png"></div>
+                        <div class="game-label" style="color: #00FF00;"><span>LW</span><span>FREE MODE</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="earn-page" class="page-content">
+                <div class="earn-card">
+                    <div class="image-box">
+                        <img src="https://i.postimg.cc/fymJMhLt/IMG-20260414-102931.png">
+                    </div>
+                    <div class="earn-info">
+                        <div style="color:var(--accent-yellow); font-weight:bold;">JOIN WHATSAPP GROUP NOW 🔥</div>
+                        <a href="#" class="btn btn-wa">JOIN NOW ON WHATSAPP ➔</a>
+                    </div>
+                </div>
+                <div class="earn-card">
+                    <div class="image-box">
+                        <img src="https://i.postimg.cc/rsmrTH4P/IMG-20260414-102212.png">
+                    </div>
+                    <div class="earn-info">
+                        <div style="color:#24A1DE; font-weight:bold;">JOIN TELEGRAM GROUP NOW 📢</div>
+                        <a href="#" class="btn btn-tg">JOIN NOW ON TELEGRAM ➔</a>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+        <div class="bottom-nav">
+            <div class="nav-item" onclick="navTo('earn')">💰<br>Earn</div>
+            <div class="nav-item active" onclick="navTo('play')">🎮<br>Play</div>
+            <div class="nav-item" onclick="navTo('account')">👤<br>Account</div>
         </div>
     </div>
 
-    <div class="game-item" onclick="openMatch('CS 1VS1', 'https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png')">
-        <div class="game-img-box"><img src="https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png"></div>
-        <div class="game-label"><span>CS</span><span>1VS1</span></div>
-    </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-    <div class="game-item" onclick="openMatch('CS SQUAD', 'https://i.postimg.cc/4x3zZmzS/file-000000000654720b8f9d1163aa723ef3.png')">
-        <div class="game-img-box"><img src="https://i.postimg.cc/4x3zZmzS/file-000000000654720b8f9d1163aa723ef3.png"></div>
-        <div class="game-label"><span>CS</span><span>SQUAD</span></div>
-    </div>
+        const firebaseConfig = {
+            apiKey: "AIzaSyANxMtv6HQwQONKXM-wZ7UxKvvCy1MYsNg",
+            authDomain: "fire-clash-999a7.firebaseapp.com",
+            projectId: "fire-clash-999a7",
+            storageBucket: "fire-clash-999a7.firebasestorage.app",
+            databaseURL: "https://fire-clash-999a7-default-rtdb.firebaseio.com",
+            messagingSenderId: "896687403596",
+            appId: "1:896687403596:web:9a07786167bdb520557ae9"
+        };
 
-    <div class="game-item" onclick="openMatch('Lone Wolf 1VS1', 'https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png')">
-        <div class="game-img-box"><img src="https://i.postimg.cc/fbH1Htwn/file-0000000012b47208996590ca9c1f6029.png"></div>
-        <div class="game-label"><span>Lone Wolf</span><span>1VS1</span></div>
-    </div>
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-    <div class="game-item wide-card" onclick="openMatch('LW FREE MODE', 'https://i.postimg.cc/nLyVdPFW/file-00000000c69c71faaddbce9853390e99.png')">
-        <div class="game-img-box" style="border: 1.5px solid #00FF00;"><img src="https://i.postimg.cc/nLyVdPFW/file-00000000c69c71faaddbce9853390e99.png"></div>
-        <div class="game-label" style="color: #00FF00;"><span>LW</span><span>FREE MODE</span></div>
-    </div>
-</div>
+        const matchRef = ref(db, 'match1');
+        onValue(matchRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById('fb-match-name').innerText = data.name;
+                document.getElementById('fb-match-prize').innerText = "₹" + data.prize;
+            }
+        });
 
-<script>
-// Ye function niche script tag mein daal dein
-window.openMatch = function(name, img) {
-    localStorage.setItem('selectedMatchName', name);
-    localStorage.setItem('selectedMatchImg', img);
-    window.location.href = 'dashboard.html';
-}
-</script>
+        // Function to Send Data to Dashboard
+        window.openMatch = function(name, img, prize, entry, type, slots) {
+            localStorage.setItem('m_name', name);
+            localStorage.setItem('m_img', img);
+            localStorage.setItem('m_prize', prize);
+            localStorage.setItem('m_entry', entry);
+            localStorage.setItem('m_type', type);
+            localStorage.setItem('m_slots', slots);
+            window.location.href = 'dashboard.html';
+        }
+
+        window.onload = function() {
+            setTimeout(() => { document.getElementById('pbar').style.width = '100%'; }, 100);
+            setTimeout(() => {
+                document.getElementById('status-text').innerText = "Server Connected ✓";
+                document.getElementById('status-text').classList.add('status-green');
+                setTimeout(() => {
+                    document.getElementById('loading-overlay').style.display = 'none';
+                    document.getElementById('app-content').style.display = 'block';
+                }, 500); 
+            }, 3000);
+        };
+
+        window.navTo = function(page) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if(page === 'earn') { document.getElementById('earn-page').classList.add('active'); document.querySelectorAll('.nav-item')[0].classList.add('active'); }
+            else if(page === 'play') { document.getElementById('play-page').classList.add('active'); document.querySelectorAll('.nav-item')[1].classList.add('active'); }
+            else if(page === 'account') { /* Account page logic here */ }
+        }
+    </script>
+</body>
+</html>
