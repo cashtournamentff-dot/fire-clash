@@ -5,48 +5,155 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIRE CLASH</title>
     <style>
-        :root { --bg-dark: #060b13; --accent-yellow: #FFB301; }
-        body { margin: 0; font-family: sans-serif; background: var(--bg-dark); color: white; }
+        :root {
+            --bg-dark: #060b13;
+            --accent-yellow: #FFB301;
+            --card-dark: #111721;
+        }
+
+        body, html { margin: 0; padding: 0; font-family: sans-serif; background: var(--bg-dark); color: white; overflow-x: hidden; }
+
+        /* HEADER */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #1a1f29; }
         .wallet-badge { background: #fff; color: #000; padding: 5px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
-        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; }
+
+        .page { padding: 15px; padding-bottom: 80px; }
+        .page-content { display: none; }
+        .page-content.active { display: block; }
+
+        /* PLAY PAGE */
+        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .game-item { cursor: pointer; text-align: center; }
         .game-img-box { background: #1c2128; aspect-ratio: 1/1; border-radius: 10px; border: 1px solid #333; overflow: hidden; }
         .game-img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .game-label { background: #1c2128; font-size: 10px; padding: 5px; border-radius: 4px; margin-top: 5px; display: flex; justify-content: space-between; font-weight: bold; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; }
+        .game-label { background: #1c2128; font-size: 9px; padding: 5px; border-radius: 4px; margin-top: 5px; display: flex; justify-content: space-between; }
+
+        /* EARN PAGE */
+        .earn-card { background: #0d1117; border-radius: 12px; margin-bottom: 20px; overflow: hidden; border: 1px solid #1f2937; }
+        .earn-card img { width: 100%; height: 160px; object-fit: contain; background: #000; }
+        .btn-wa { background: #25D366; color: white; padding: 8px 15px; border-radius: 20px; text-decoration: none; display: inline-block; margin: 10px; font-size: 12px; }
+        .btn-tg { background: #0088cc; color: white; padding: 8px 15px; border-radius: 20px; text-decoration: none; display: inline-block; margin: 10px; font-size: 12px; }
+
+        /* ACCOUNT PAGE */
+        #account-page { background: #f0f0f0; min-height: 100vh; color: #000; margin: -15px; padding-bottom: 80px; }
+        .acc-head { background: #1a1f29; color: white; padding: 40px 20px; text-align: center; }
+        .stats-bar { background: #1a1f29; display: flex; margin: -20px 15px 15px; border-radius: 10px; padding: 15px 0; color: white; }
+        .stat-item { flex: 1; text-align: center; }
+        .menu-item { background: white; padding: 15px; margin: 8px 15px; border-radius: 8px; display: flex; justify-content: space-between; font-weight: bold; }
+
+        /* --- FULL SCREEN MATCH DETAILS (CARD CLICK) --- */
+        #match-details-screen { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #060b13; z-index: 2000; overflow-y: auto; 
+        }
+        .detail-header { display: flex; align-items: center; padding: 15px; background: #1a1f29; }
+        .close-btn { font-size: 30px; color: var(--accent-yellow); cursor: pointer; margin-right: 20px; }
+        .detail-banner { width: 100%; height: 200px; object-fit: cover; }
+        .white-box { background: white; color: black; padding: 20px; }
+        .detail-footer { 
+            position: fixed; bottom: 0; width: 100%; background: white; padding: 15px; 
+            display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; box-sizing: border-box;
+        }
+        .join-now { background: black; color: white; border: none; padding: 10px 25px; border-radius: 5px; font-weight: bold; }
+
+        /* BOTTOM NAV */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; }
+        .nav-item { text-align: center; color: #888; font-size: 12px; cursor: pointer; }
+        .nav-item.active { color: #fff; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div><small>Welcome Back,</small><br><b>Fire Clash</b></div>
-        <div class="wallet-badge">💰 0.00</div>
+
+    <div id="main-header" class="header">
+        <div><small style="color:#888;">Welcome Back,</small><br><b style="font-size:16px;">Fire Clash</b></div>
+        <div class="wallet-badge" onclick="showWallet()">💰 0.00</div>
     </div>
 
-    <div class="game-grid">
-        <div class="game-item" onclick="openMatch('Bermuda Tournament', 'https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png', '100', 'FREE', 'Solo', '48')">
-            <div class="game-img-box"><img src="https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png"></div>
-            <div class="game-label"><span>Bermuda</span><span>₹0</span></div>
+    <div class="page">
+        <div id="play-page" class="page-content active">
+            <div class="game-grid">
+                <div class="game-item" onclick="viewMatch('Bermuda Tournament', 'https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png', '100', 'FREE', 'Solo', '48')">
+                    <div class="game-img-box"><img src="https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png"></div>
+                    <div class="game-label"><span>Bermuda</span><span style="color:var(--accent-yellow)">₹0</span></div>
+                </div>
+                <div class="game-item" onclick="viewMatch('CS 1VS1', 'https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png', '50', '10', '1vs1', '2')">
+                    <div class="game-img-box"><img src="https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png"></div>
+                    <div class="game-label"><span>CS</span><span>1vs1</span></div>
+                </div>
+            </div>
         </div>
-        <div class="game-item" onclick="openMatch('CS 1VS1', 'https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png', '50', '10', '1VS1', '2')">
-            <div class="game-img-box"><img src="https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png"></div>
-            <div class="game-label"><span>CS</span><span>1VS1</span></div>
+
+        <div id="earn-page" class="page-content">
+            <div class="earn-card">
+                <img src="https://i.postimg.cc/fymJMhLt/IMG-20260414-102931.png">
+                <a href="#" class="btn-wa">JOIN WHATSAPP ➔</a>
+            </div>
+            <div class="earn-card">
+                <img src="https://i.postimg.cc/rsmrTH4P/IMG-20260414-102212.png">
+                <a href="#" class="btn-tg">JOIN TELEGRAM ➔</a>
+            </div>
+        </div>
+
+        <div id="account-page" class="page-content">
+            <div class="acc-head"><div style="font-size:40px;">👤</div><b>Fire Clash User</b></div>
+            <div class="stats-bar">
+                <div class="stat-item"><b>0</b><br><small>Matches</small></div>
+                <div class="stat-item"><b>💰 0.00</b><br><small>Balance</small></div>
+            </div>
+            <div class="menu-item">💳 My Wallet <span>></span></div>
+            <div class="menu-item">📜 About Us <span>></span></div>
+        </div>
+    </div>
+
+    <div id="match-details-screen">
+        <div class="detail-header">
+            <span class="close-btn" onclick="closeMatch()">←</span> <b id="det-nav-title">DETAILS</b>
+        </div>
+        <img id="det-img" class="detail-banner">
+        <div class="white-box">
+            <h2 id="det-name" style="margin:0;">Match Name</h2>
+            <div style="display:flex; justify-content:space-between; margin-top:20px; border-top:1px solid #eee; padding-top:15px;">
+                <div><small>PRIZE</small><br><b id="det-prize">₹0</b></div>
+                <div><small>ENTRY</small><br><b id="det-entry">FREE</b></div>
+                <div><small>TYPE</small><br><b id="det-type">Solo</b></div>
+            </div>
+        </div>
+        <div class="detail-footer">
+            <div id="det-slots" style="font-weight:bold; color:black;">0/48 Joined</div>
+            <button class="join-now">JOIN NOW</button>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <span>💰 Earn</span><span style="color: white;">🎮 Play</span><span>👤 Account</span>
+        <div class="nav-item" onclick="navTo('earn')">💰<br>Earn</div>
+        <div class="nav-item active" onclick="navTo('play')">🎮<br>Play</div>
+        <div class="nav-item" onclick="navTo('account')">👤<br>Account</div>
     </div>
 
     <script>
-        function openMatch(name, img, prize, entry, type, slots) {
-            localStorage.setItem('m_name', name);
-            localStorage.setItem('m_img', img);
-            localStorage.setItem('m_prize', prize);
-            localStorage.setItem('m_entry', entry);
-            localStorage.setItem('m_type', type);
-            localStorage.setItem('m_slots', slots);
-            window.location.href = 'dashboard.html';
+        function navTo(page) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('main-header').style.display = (page === 'account') ? 'none' : 'flex';
+            
+            if(page === 'earn') { document.getElementById('earn-page').classList.add('active'); document.querySelectorAll('.nav-item')[0].classList.add('active'); }
+            if(page === 'play') { document.getElementById('play-page').classList.add('active'); document.querySelectorAll('.nav-item')[1].classList.add('active'); }
+            if(page === 'account') { document.getElementById('account-page').classList.add('active'); document.querySelectorAll('.nav-item')[2].classList.add('active'); }
+        }
+
+        function viewMatch(name, img, prize, entry, type, slots) {
+            document.getElementById('det-name').innerText = name;
+            document.getElementById('det-nav-title').innerText = name;
+            document.getElementById('det-img').src = img;
+            document.getElementById('det-prize').innerText = "₹" + prize;
+            document.getElementById('det-entry').innerText = entry;
+            document.getElementById('det-type').innerText = type;
+            document.getElementById('det-slots').innerText = "0/" + slots + " Joined";
+            document.getElementById('match-details-screen').style.display = 'block';
+        }
+
+        function closeMatch() {
+            document.getElementById('match-details-screen').style.display = 'none';
         }
     </script>
 </body>
