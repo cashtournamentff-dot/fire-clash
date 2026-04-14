@@ -3,168 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CASHH TOURNAMENT FF</title>
+    <title>Match Details</title>
     <style>
-        :root {
-            --bg-dark: #060b13;
-            --accent-yellow: #FFB301;
-            --whatsapp-green: #25D366;
-            --telegram-blue: #0088cc;
-            --card-dark: #111721;
-            --wallet-blue: #001529;
-            --purple-btn: #7000ff;
+        body { margin: 0; font-family: sans-serif; background: #060b13; color: white; }
+        
+        /* --- HEADER WITH BACK ARROW --- */
+        .header { 
+            display: flex; 
+            align-items: center; 
+            padding: 15px; 
+            background: #1a1f29; 
+            border-bottom: 1px solid #333; 
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
+        .back-btn { 
+            font-size: 30px; /* Bada teer */
+            cursor: pointer; 
+            color: #FFB301; /* Pila color taaki saaf dikhe */
+            text-decoration: none; 
+            margin-right: 20px; 
+            font-weight: bold;
+            display: inline-block;
+            line-height: 1;
+        }
+        
+        .banner { width: 100%; height: 210px; object-fit: cover; }
+        
+        .details-box { padding: 20px; background: white; color: black; border-radius: 0 0 20px 20px; }
+        .match-title { font-size: 20px; font-weight: bold; margin: 0; }
+        
+        .stats-row { 
+            display: flex; 
+            justify-content: space-between; 
+            margin-top: 20px; 
+            border-top: 1px solid #eee; 
+            padding-top: 15px; 
+        }
+        .stat-item { text-align: center; flex: 1; }
+        .stat-item small { color: #888; font-size: 10px; text-transform: uppercase; }
+        .stat-item b { display: block; font-size: 14px; margin-top: 4px; }
 
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; font-family: sans-serif; background-color: var(--bg-dark); color: white; overflow-x: hidden; }
-
-        /* LOADING */
-        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; }
-        .progress-container { width: 75%; height: 10px; background: #222; border-radius: 10px; margin: 20px 0; overflow: hidden; border: 1px solid #444; }
-        .progress-bar-load { width: 0%; height: 100%; background: #fff; transition: width 3s linear; }
-
-        /* MAIN APP */
-        #app-content { display:none; }
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #1a1f29; }
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .avatar { width: 35px; height: 35px; border-radius: 50%; background: orange; border: 1.5px solid white; }
-        .wallet-badge { background: #fff; color: #000; padding: 4px 12px; border-radius: 4px; font-weight: bold; cursor: pointer; }
-
-        .page { padding: 15px; padding-bottom: 80px; }
-        .page-content { display: none; }
-        .page-content.active { display: block; }
-
-        /* Play Page */
-        .tabs { display: flex; background: #161b22; border-radius: 6px; overflow: hidden; margin-bottom: 20px; border: 1px solid #333; }
-        .tab { flex: 1; padding: 10px; text-align: center; font-size: 13px; font-weight: bold; background: #2d333b; color: #fff; border-bottom: 2px solid var(--accent-yellow); }
-        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-        .game-item { text-align: center; cursor: pointer; }
-        .wide-card { grid-column: span 2; }
-        .game-img-box { background: #1c2128; width: 100%; aspect-ratio: 1/1; border-radius: 10px; border: 1px solid #30363d; margin-bottom: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .game-img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .game-label { background: #1c2128; font-size: 9px; padding: 5px 4px; border-radius: 4px; color: #ccc; text-transform: uppercase; font-weight: bold; display: flex; justify-content: space-between; }
-
-        /* EARN PAGE */
-        .earn-card { background: #0d1117; border-radius: 12px; margin-bottom: 20px; overflow: hidden; border: 1px solid #1f2937; }
-        .image-box { width: 100%; height: 160px; background: #000; display: flex; align-items: center; justify-content: center; }
-        .image-box img { max-width: 100%; max-height: 100%; object-fit: contain; }
-        .btn-wa { background: linear-gradient(to right, #128C7E, #25D366); padding: 8px 15px; border-radius: 20px; text-decoration: none; color: white; font-size: 12px; display: inline-block; margin-top: 10px; }
-        .btn-tg { background: linear-gradient(to right, #0088cc, #24A1DE); padding: 8px 15px; border-radius: 20px; text-decoration: none; color: white; font-size: 12px; display: inline-block; margin-top: 10px; }
-
-        /* ACCOUNT PAGE */
-        #account-page { background: #f0f0f0; min-height: 100vh; margin: -15px; padding: 0 0 80px 0; color: #000; }
-        .account-header-bg { background: #1a1f29; padding: 40px 20px; text-align: center; color: white; }
-        .profile-pic { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #fff; margin: 0 auto 10px; background: orange; }
-        .stats-bar { background: #1a1f29; display: flex; margin: -25px 15px 15px; border-radius: 10px; padding: 15px 0; color: white; }
-        .stat-item { flex: 1; text-align: center; border-right: 1px solid #333; }
-        .menu-item { background: white; padding: 15px; margin: 8px 15px; border-radius: 8px; display: flex; justify-content: space-between; font-weight: bold; cursor: pointer; }
-
-        /* WALLET */
-        #wallet-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--wallet-blue); z-index: 2000; }
-        .w-head { padding: 15px; background: #1a1f29; color: white; display: flex; align-items: center; gap: 10px; }
-
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; display: flex; justify-content: space-around; align-items: center; border-top: 1px solid #222; }
-        .nav-item { text-align: center; color: #888; font-size: 12px; cursor: pointer; }
-        .nav-item.active { color: #fff; }
+        /* --- FOOTER JOIN SECTION --- */
+        .footer { 
+            position: fixed; 
+            bottom: 0; 
+            width: 100%; 
+            padding: 15px; 
+            background: white; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-sizing: border-box; 
+            border-top: 1px solid #eee; 
+        }
+        .slot-info { color: #444; font-size: 13px; font-weight: bold; }
+        .join-btn { 
+            background: #000; 
+            color: white; 
+            padding: 12px 35px; 
+            border-radius: 8px; 
+            border: none; 
+            font-weight: bold; 
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-    <div id="loading-overlay">
-        <h2 style="color: #FFB301;">FIRE CLASH</h2>
-        <div class="progress-container"><div class="progress-bar-load" id="pbar"></div></div>
+    <div class="header">
+        <a href="index.html" class="back-btn">←</a> 
+        <div id="nav-name" style="font-weight: bold; font-size: 16px; color: white;">MATCH DETAILS</div>
     </div>
 
-    <div id="app-content">
-        <div id="main-header" class="header">
-            <div class="user-info">
-                <div class="avatar"></div>
-                <div><div style="font-size:10px;color:#888;">Welcome Back,</div><div style="font-weight:bold;">Fire Clash</div></div>
-            </div>
-            <div class="wallet-badge" onclick="showWallet()">💰 0.00</div>
+    <img id="m-img" class="banner" src="">
+
+    <div class="details-box">
+        <h2 id="m-name" class="match-title">Match Name</h2>
+        <p style="font-size: 11px; color: #666; margin-top: 5px;">Map: Bermuda | Mode: Battle Royale</p>
+        
+        <div class="stats-row">
+            <div class="stat-item"><small>Prize Pool</small><b id="m-prize">₹0</b></div>
+            <div class="stat-item"><small>Entry Fee</small><b id="m-entry">FREE</b></div>
+            <div class="stat-item"><small>Type</small><b id="m-type">Solo</b></div>
         </div>
+    </div>
 
-        <div class="page">
-            <div id="play-page" class="page-content active">
-                <div class="tabs"><div class="tab">TOURNAMENT</div></div>
-                <div class="game-grid">
-                    <div class="game-item" onclick="openMatch('Bermuda Tournament', 'https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png', '100', 'FREE', 'Solo', '48')">
-                        <div class="game-img-box" style="border:1px solid var(--accent-yellow)"><img src="https://i.postimg.cc/kGkkCkHh/file-000000005dc47208ae6db87230e677bd.png"></div>
-                        <div class="game-label"><span>Bermuda</span><span style="color:var(--accent-yellow)">₹0</span></div>
-                    </div>
-                    <div class="game-item" onclick="openMatch('CS 1VS1', 'https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png', '50', '10', '1vs1', '2')">
-                        <div class="game-img-box"><img src="https://i.postimg.cc/pX24tJy4/file-000000009518720bac36aa8bb9de95ea.png"></div>
-                        <div class="game-label"><span>CS</span><span>1vs1</span></div>
-                    </div>
-                    <div class="game-item" onclick="openMatch('CS SQUAD', 'https://i.postimg.cc/4x3zZmzS/file-000000000654720b8f9d1163aa723ef3.png', '200', '40', 'Squad', '8')">
-                        <div class="game-img-box"><img src="https://i.postimg.cc/4x3zZmzS/file-000000000654720b8f9d1163aa723ef3.png"></div>
-                        <div class="game-label"><span>CS</span><span>Squad</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="earn-page" class="page-content">
-                <div class="earn-card">
-                    <div class="image-box"><img src="https://i.postimg.cc/fymJMhLt/IMG-20260414-102931.png"></div>
-                    <div style="padding:15px;"><div style="color:var(--accent-yellow);font-weight:bold;">JOIN WHATSAPP GROUP</div><a href="#" class="btn-wa">JOIN NOW ➔</a></div>
-                </div>
-                <div class="earn-card">
-                    <div class="image-box"><img src="https://i.postimg.cc/rsmrTH4P/IMG-20260414-102212.png"></div>
-                    <div style="padding:15px;"><div style="color:#24A1DE;font-weight:bold;">JOIN TELEGRAM GROUP</div><a href="#" class="btn-tg">JOIN NOW ➔</a></div>
-                </div>
-            </div>
-
-            <div id="account-page" class="page-content">
-                <div class="account-header-bg"><div class="profile-pic">👤</div><div style="font-weight:bold;">Fire Clash User</div></div>
-                <div class="stats-bar">
-                    <div class="stat-item"><b>0</b><br><small>Matches</small></div>
-                    <div class="stat-item" onclick="showWallet()"><b>💰 0.00</b><br><small>Balance</small></div>
-                </div>
-                <div class="menu-item" onclick="showWallet()"><span>💳 My Wallet</span><span>></span></div>
-                <div class="menu-item"><span>🏆 Leaderboard</span><span>></span></div>
-            </div>
-        </div>
-
-        <div id="wallet-screen">
-            <div class="w-head"><span onclick="hideWallet()" style="cursor:pointer;">←</span> <b>My Wallet</b></div>
-            <div style="background:white; margin:15px; padding:20px; border-radius:10px; color:black; text-align:center;">
-                <p>Total Balance</p><h2>💰 0.00</h2>
-                <button style="background:var(--purple-btn); color:white; border:none; padding:10px 20px; border-radius:5px;">ADD CASH</button>
-            </div>
-        </div>
-
-        <div class="bottom-nav">
-            <div class="nav-item" onclick="navTo('earn')">💰<br>Earn</div>
-            <div class="nav-item active" onclick="navTo('play')">🎮<br>Play</div>
-            <div class="nav-item" onclick="navTo('account')">👤<br>Account</div>
-        </div>
+    <div class="footer">
+        <div class="slot-info" id="m-slots">0/48 Joined</div>
+        <button class="join-btn">JOIN NOW</button>
     </div>
 
     <script>
-        window.onload = function() {
-            setTimeout(() => { document.getElementById('pbar').style.width = '100%'; }, 100);
-            setTimeout(() => { document.getElementById('loading-overlay').style.display='none'; document.getElementById('app-content').style.display='block'; }, 3000);
-        };
-
-        window.openMatch = function(name, img, prize, entry, type, slots) {
-            localStorage.setItem('m_name', name);
-            localStorage.setItem('m_img', img);
-            localStorage.setItem('m_prize', prize);
-            localStorage.setItem('m_entry', entry);
-            localStorage.setItem('m_type', type);
-            localStorage.setItem('m_slots', slots);
-            window.location.href = 'dashboard.html';
-        }
-
-        window.navTo = function(page) {
-            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if(page === 'earn') { document.getElementById('earn-page').classList.add('active'); document.querySelectorAll('.nav-item')[0].classList.add('active'); }
-            else if(page === 'play') { document.getElementById('play-page').classList.add('active'); document.querySelectorAll('.nav-item')[1].classList.add('active'); }
-            else if(page === 'account') { document.getElementById('account-page').classList.add('active'); document.querySelectorAll('.nav-item')[2].classList.add('active'); }
-        }
-
-        window.showWallet = function() { document.getElementById('wallet-screen').style.display = 'block'; }
-        window.hideWallet = function() { document.getElementById('wallet-screen').style.display = 'none'; }
+        // Data Loading from index.html clicks
+        document.getElementById('m-name').innerText = localStorage.getItem('m_name') || "Tournament";
+        document.getElementById('nav-name').innerText = localStorage.getItem('m_name') || "Details";
+        document.getElementById('m-img').src = localStorage.getItem('m_img') || "";
+        document.getElementById('m-prize').innerText = "₹" + (localStorage.getItem('m_prize') || "0");
+        document.getElementById('m-entry').innerText = localStorage.getItem('m_entry') || "FREE";
+        document.getElementById('m-type').innerText = localStorage.getItem('m_type') || "Solo";
+        document.getElementById('m-slots').innerText = "0/" + (localStorage.getItem('m_slots') || "48") + " Joined";
     </script>
+
 </body>
 </html>
