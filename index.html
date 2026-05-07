@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fire Clash - Gaming Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; scroll-behavior: smooth; }
+        
+        body { background: #0b0118; color: white; text-align: center; width: 100%; overflow-x: hidden; }
+
+        /* Full Screen Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: radial-gradient(circle, rgba(63,0,113,0.3) 0%, rgba(11,1,24,1) 100%);
+        }
+
+        /* Responsive Container taaki content chhota na dikhe */
+        .container {
+            width: 100%;
+            max-width: 500px; /* Mobile size par fix rahega */
+            margin: 0 auto;
+        }
+
+        .welcome { font-size: 0.9rem; letter-spacing: 3px; text-transform: uppercase; color: #fff; }
+        .main-title { font-size: 3.5rem; font-weight: 900; color: #ffcc00; text-shadow: 0 0 20px #ffcc00; margin: 10px 0; }
+        .trusted-tag { font-size: 1.1rem; color: #bbb; margin-bottom: 30px; font-weight: bold; }
+
+        /* Stats Row */
+        .stats-container {
+            display: flex; 
+            justify-content: space-around;
+            margin-bottom: 35px; 
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px; 
+            border-radius: 15px; 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .stat-box { flex: 1; }
+        .stat-box:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.1); }
+        .stat-num { font-size: 1.3rem; font-weight: bold; color: #ffcc00; display: block; }
+        .stat-txt { font-size: 0.65rem; color: #aaa; text-transform: uppercase; }
+
+        /* Patla Download Button */
+        .btn-download {
+            background: transparent; color: #00ff88; padding: 12px 50px; 
+            font-size: 1.2rem; font-weight: bold; border: 2px solid #00ff88; 
+            border-radius: 10px; text-decoration: none; display: inline-flex; 
+            flex-direction: column; align-items: center; line-height: 1.1;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+
+        /* Hilne Wala Text (Bounce Animation) */
+        .scroll-hint {
+            position: absolute;
+            bottom: 30px;
+            font-size: 0.8rem;
+            color: #ffcc00;
+            font-weight: bold;
+            letter-spacing: 1px;
+            animation: bounce 1.5s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(-10px); opacity: 1; }
+        }
+
+        /* Content Sections */
+        .details-section {
+            padding: 60px 25px;
+            max-width: 500px;
+            margin: 0 auto;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        h2 { color: #ffcc00; margin-bottom: 20px; text-transform: uppercase; font-size: 1.6rem; border-left: 4px solid #ffcc00; padding-left: 15px; }
+        .rules-list { list-style: none; }
+        .rules-list li { margin-bottom: 15px; padding-left: 30px; position: relative; color: #ccc; font-size: 0.95rem; }
+        .rules-list li::before { content: "🔥"; position: absolute; left: 0; }
+
+        .contact-box { background: rgba(0, 255, 136, 0.05); padding: 25px; border-radius: 20px; text-align: center; border: 1px solid rgba(0, 255, 136, 0.3); }
+        .wa-btn { display: block; background: #25d366; color: white; padding: 15px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 1.1rem; margin-top: 15px; }
+
+        footer { padding: 40px; font-size: 0.75rem; color: #444; }
+
+        /* Mobile Adjustments */
+        @media (max-width: 400px) {
+            .main-title { font-size: 2.8rem; }
+            .stat-num { font-size: 1.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <div class="container">
+            <p class="welcome">Welcome to</p>
+            <h1 class="main-title">FIRE CLASH</h1>
+            <p class="trusted-tag">India's Most Trusted eSports App</p>
+
+            <div class="stats-container">
+                <div class="stat-box"><span class="stat-num">2L+</span><span class="stat-txt">Users</span></div>
+                <div class="stat-box"><span class="stat-num">50K+</span><span class="stat-txt">Monthly</span></div>
+                <div class="stat-box"><span class="stat-num">15,000+</span><span class="stat-txt">Winners</span></div>
+            </div>
+
+           <a href="Fire%20Clash.apk" class="btn-download" download>
+
+                <span style="font-size: 0.8rem; opacity: 0.8; display: block;">Download Now</span>
+            </a>
+        </div>
+
+        <div class="scroll-hint">
+            SCROLL DOWN FOR DETAILS ↓
+        </div>
+    </div>
+
+    <div class="details-section">
+        <h2>Tournament Rules</h2>
+        <ul class="rules-list">
+            <li>Hacking or using unfair tools leads to a permanent ban.</li>
+            <li>Results update within 30 mins after the match ends.</li>
+            <li>No teaming in Solo matches; fair play is mandatory.</li>
+            <li>Join the room 5 minutes before the start time.</li>
+        </ul>
+    </div>
+
+    <div class="details-section">
+        <h2>Terms & Conditions</h2>
+        <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 12px;">1. Must be 18+ years old to play paid matches.</p>
+        <p style="color: #aaa; font-size: 0.9rem; margin-bottom: 12px;">2. This platform involves financial risk; play responsibly.</p>
+        <p style="color: #aaa; font-size: 0.9rem;">3. Withdrawals are processed within 24-48 working hours.</p>
+    </div>
+
+    <div class="details-section" style="border: none;">
+        <h2>Contact Us</h2>
+        <div class="contact-box">
+            <p style="font-size: 0.95rem;">Koi dikkat hai? WhatsApp par chat karein:</p>
+            <a href="https://wa.me/+919241138080" class="wa-btn">Chat on WhatsApp</a>
+            <p style="margin-top: 15px; font-size: 0.8rem; color: #666;">support@fireclash.com</p>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 Fire Clash eSports. All Rights Reserved.
+    </footer>
+
+</body>
+</html>
